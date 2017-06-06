@@ -14,6 +14,8 @@
 		6FD366351EE6A78F00064523 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FD366341EE6A78F00064523 /* Assets.xcassets */; };
 		6FD366381EE6A78F00064523 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FD366361EE6A78F00064523 /* LaunchScreen.storyboard */; };
 		6FD366431EE6A78F00064523 /* DropMenuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD366421EE6A78F00064523 /* DropMenuTests.m */; };
+		6FD366501EE6A7E500064523 /* DropMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD3664F1EE6A7E500064523 /* DropMenuView.m */; };
+		6FD366531EE6A80F00064523 /* FilterTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD366521EE6A80F00064523 /* FilterTypeModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,10 @@
 		6FD3663E1EE6A78F00064523 /* DropMenuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropMenuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FD366421EE6A78F00064523 /* DropMenuTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DropMenuTests.m; sourceTree = "<group>"; };
 		6FD366441EE6A78F00064523 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6FD3664E1EE6A7E500064523 /* DropMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropMenuView.h; sourceTree = "<group>"; };
+		6FD3664F1EE6A7E500064523 /* DropMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropMenuView.m; sourceTree = "<group>"; };
+		6FD366511EE6A80F00064523 /* FilterTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterTypeModel.h; sourceTree = "<group>"; };
+		6FD366521EE6A80F00064523 /* FilterTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterTypeModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +91,7 @@
 				6FD3662C1EE6A78F00064523 /* AppDelegate.m */,
 				6FD3662E1EE6A78F00064523 /* ViewController.h */,
 				6FD3662F1EE6A78F00064523 /* ViewController.m */,
+				6FD3664D1EE6A7E500064523 /* DropMenu */,
 				6FD366311EE6A78F00064523 /* Main.storyboard */,
 				6FD366341EE6A78F00064523 /* Assets.xcassets */,
 				6FD366361EE6A78F00064523 /* LaunchScreen.storyboard */,
@@ -109,6 +116,17 @@
 				6FD366441EE6A78F00064523 /* Info.plist */,
 			);
 			path = DropMenuTests;
+			sourceTree = "<group>";
+		};
+		6FD3664D1EE6A7E500064523 /* DropMenu */ = {
+			isa = PBXGroup;
+			children = (
+				6FD3664E1EE6A7E500064523 /* DropMenuView.h */,
+				6FD3664F1EE6A7E500064523 /* DropMenuView.m */,
+				6FD366511EE6A80F00064523 /* FilterTypeModel.h */,
+				6FD366521EE6A80F00064523 /* FilterTypeModel.m */,
+			);
+			path = DropMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,6 +235,8 @@
 			files = (
 				6FD366301EE6A78F00064523 /* ViewController.m in Sources */,
 				6FD3662D1EE6A78F00064523 /* AppDelegate.m in Sources */,
+				6FD366501EE6A7E500064523 /* DropMenuView.m in Sources */,
+				6FD366531EE6A80F00064523 /* FilterTypeModel.m in Sources */,
 				6FD3662A1EE6A78F00064523 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
