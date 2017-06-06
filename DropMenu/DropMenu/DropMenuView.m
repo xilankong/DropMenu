@@ -82,6 +82,8 @@ static NSString *identifier = @"Cell";
 #pragma mark - 触发下拉事件
 - (void)menuTappedWithSuperView:(UIView *)view {
     if (!_show) {
+        
+        [_tableView reloadData];
         if (self.dataSource && [self.dataSource respondsToSelector:@selector(menu_updateFilterViewPosition)]) {
             //防止错位
             CGFloat positionY = [self.dataSource menu_updateFilterViewPosition];
