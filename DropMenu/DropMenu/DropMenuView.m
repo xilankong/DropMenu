@@ -83,27 +83,21 @@ static NSString *identifier = @"Cell";
 - (void)menuTappedWithSuperView:(UIView *)view {
     if (!_show) {
         
-        [_tableView reloadData];
         if (self.dataSource && [self.dataSource respondsToSelector:@selector(menu_updateFilterViewPosition)]) {
             //防止错位
             CGFloat positionY = [self.dataSource menu_updateFilterViewPosition];
             self.frame = CGRectMake(0, positionY, SCREEN_WIDTH, SCREEN_HEIGHT - positionY);
         }
-
-        NSUInteger index = 0;
-        for (FilterTypeModel *model in _menuArray) {
-            if ([model.filterName isEqualToString:self.titleLabel.text]) {
-                index = [_menuArray indexOfObject:model];
-            }
-        }
-        NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [view addSubview:self];
+        [_tableView reloadData];
+        
         [UIView animateWithDuration:0.2 animations:^{
             _backGroundView.backgroundColor = bgColor;
             if (self.transformImageView) {
                 self.transformImageView.transform = CGAffineTransformMakeRotation(M_PI);
             }
+        } completion:^(BOOL finished) {
+            _show = !_show;
         }];
     } else {
         [UIView animateWithDuration:0.2 animations:^{
@@ -113,9 +107,9 @@ static NSString *identifier = @"Cell";
             }
         } completion:^(BOOL finished) {
             [self removeFromSuperview];
+            _show = !_show;
         }];
     }
-    _show = !_show;
 }
 
 #pragma mark - 触发收起事件
