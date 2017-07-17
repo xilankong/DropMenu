@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3DE3AA2D1F1D06C100BC4B42 /* SectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DE3AA2C1F1D06C100BC4B42 /* SectionView.m */; };
+		3DE3AA2F1F1D06DC00BC4B42 /* SectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE3AA2E1F1D06DC00BC4B42 /* SectionView.xib */; };
 		6FD3662A1EE6A78F00064523 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD366291EE6A78F00064523 /* main.m */; };
 		6FD3662D1EE6A78F00064523 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD3662C1EE6A78F00064523 /* AppDelegate.m */; };
 		6FD366301EE6A78F00064523 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD3662F1EE6A78F00064523 /* ViewController.m */; };
@@ -29,6 +31,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3DE3AA2B1F1D06C100BC4B42 /* SectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionView.h; sourceTree = "<group>"; };
+		3DE3AA2C1F1D06C100BC4B42 /* SectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionView.m; sourceTree = "<group>"; };
+		3DE3AA2E1F1D06DC00BC4B42 /* SectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SectionView.xib; sourceTree = "<group>"; };
 		6FD366251EE6A78F00064523 /* DropMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DropMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FD366291EE6A78F00064523 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6FD3662B1EE6A78F00064523 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -91,6 +96,9 @@
 				6FD3662C1EE6A78F00064523 /* AppDelegate.m */,
 				6FD3662E1EE6A78F00064523 /* ViewController.h */,
 				6FD3662F1EE6A78F00064523 /* ViewController.m */,
+				3DE3AA2B1F1D06C100BC4B42 /* SectionView.h */,
+				3DE3AA2C1F1D06C100BC4B42 /* SectionView.m */,
+				3DE3AA2E1F1D06DC00BC4B42 /* SectionView.xib */,
 				6FD3664D1EE6A7E500064523 /* DropMenu */,
 				6FD366311EE6A78F00064523 /* Main.storyboard */,
 				6FD366341EE6A78F00064523 /* Assets.xcassets */,
@@ -213,6 +221,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DE3AA2F1F1D06DC00BC4B42 /* SectionView.xib in Resources */,
 				6FD366381EE6A78F00064523 /* LaunchScreen.storyboard in Resources */,
 				6FD366351EE6A78F00064523 /* Assets.xcassets in Resources */,
 				6FD366331EE6A78F00064523 /* Main.storyboard in Resources */,
@@ -233,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DE3AA2D1F1D06C100BC4B42 /* SectionView.m in Sources */,
 				6FD366301EE6A78F00064523 /* ViewController.m in Sources */,
 				6FD3662D1EE6A78F00064523 /* AppDelegate.m in Sources */,
 				6FD366501EE6A7E500064523 /* DropMenuView.m in Sources */,
@@ -377,6 +387,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 985LB7AXTT;
 				INFOPLIST_FILE = DropMenu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yang.DropMenu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -389,6 +400,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 985LB7AXTT;
 				INFOPLIST_FILE = DropMenu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yang.DropMenu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -440,6 +452,7 @@
 				6FD366491EE6A78F00064523 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6FD3664A1EE6A78F00064523 /* Build configuration list for PBXNativeTarget "DropMenuTests" */ = {
 			isa = XCConfigurationList;
@@ -448,6 +461,7 @@
 				6FD3664C1EE6A78F00064523 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

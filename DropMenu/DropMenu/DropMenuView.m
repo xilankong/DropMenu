@@ -8,8 +8,8 @@
 
 #import "DropMenuView.h"
 
-#define SCREEN_HEIGHT  [UIScreen mainScreen].bounds.size.height
-#define SCREEN_WIDTH   [UIScreen mainScreen].bounds.size.width
+#define screenHeight  [UIScreen mainScreen].bounds.size.height
+#define screenWidth   [UIScreen mainScreen].bounds.size.width
 //cell高度
 #define tableViewCellHeight 45.f
 //最大下拉高度
@@ -22,16 +22,17 @@
 #define selectColor [UIColor colorWithRed:0.02 green:0.81 blue:0.76 alpha:1.0]
 
 
-static NSString *identifier = @"Cell";
+static NSString *identifier = @"dropMenuViewId";
 
 @interface DropMenuView () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, assign) BOOL show; //是否显示
 @property (nonatomic, assign) CGPoint origin;
 @property (nonatomic, assign) CGFloat height;
+@property (nonatomic, strong) NSMutableArray *menuArray;
+
 @property (nonatomic, strong) UIView *backGroundView;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NSMutableArray *menuArray;
 
 @end
 
@@ -47,21 +48,17 @@ static NSString *identifier = @"Cell";
 
 #pragma mark - 初始化 根据位置
 - (DropMenuView *)initWithOrigin:(CGPoint)origin {
-    self = [self initWithFrame:CGRectMake(origin.x, origin.y, SCREEN_WIDTH, SCREEN_HEIGHT - origin.y)];
+    self = [self initWithFrame:CGRectMake(origin.x, origin.y, screenWidth, screenHeight - origin.y)];
     if (self) {
         _origin = origin;
-        _height = [self.menuArray count] * tableViewCellHeight > tableViewMaxHeight ? tableViewMaxHeight : [_menuArray count] * tableViewCellHeight;
-        
         //列表
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(origin.x, 0, self.frame.size.width, _height) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(origin.x, 0, self.frame.size.width, 0) style:UITableViewStylePlain];
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.rowHeight = tableViewCellHeight;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.scrollEnabled = [_menuArray count] * tableViewCellHeight > tableViewMaxHeight ? YES : NO;
-        
         //遮罩
-        _backGroundView = [[UIView alloc] initWithFrame:CGRectMake(origin.x, 0, self.frame.size.width, self.frame.size.height)];
+        _backGroundView = [[UIView alloc] initWithFrame:CGRectMake(origin.x, 0, self.frame.size.width, screenHeight)];
         _backGroundView.backgroundColor = bgColor;
         _backGroundView.opaque = NO;
         
@@ -75,7 +72,10 @@ static NSString *identifier = @"Cell";
 
 #pragma mark - 更新数据源
 -(void)reloadData {
-    _tableView.frame = CGRectMake(_origin.x, 0, self.frame.size.width, [self.menuArray count] * tableViewCellHeight);
+    CGFloat height = [self.menuArray count] * tableViewCellHeight > tableViewMaxHeight ? tableViewMaxHeight : [_menuArray count] * tableViewCellHeight;
+    _tableView.frame = CGRectMake(_origin.x, 0, self.frame.size.width, height);
+    _tableView.scrollEnabled = [_menuArray count] * tableViewCellHeight > tableViewMaxHeight ? YES : NO;
+    
     [_tableView reloadData];
 }
 
@@ -86,7 +86,7 @@ static NSString *identifier = @"Cell";
         if (self.dataSource && [self.dataSource respondsToSelector:@selector(menu_updateFilterViewPosition)]) {
             //防止错位
             CGFloat positionY = [self.dataSource menu_updateFilterViewPosition];
-            self.frame = CGRectMake(0, positionY, SCREEN_WIDTH, SCREEN_HEIGHT - positionY);
+            self.frame = CGRectMake(0, positionY, screenWidth, screenHeight - positionY);
         }
         [view addSubview:self];
         [_tableView reloadData];
