@@ -14,9 +14,11 @@
 #define screenWidth   [UIScreen mainScreen].bounds.size.width
 #define tableViewHeaderHeight 150
 #define tableViewSectionHeight 45
+
 @interface ViewController ()<DropMenuDelegate, DropMenuDataSource, UITableViewDataSource, UITableViewDelegate, SectionViewProtocol>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
 @property (strong, nonatomic) SectionView *sectionView;
 @property (nonatomic, strong) DropMenuView *menuView;
 
@@ -25,21 +27,11 @@
 
 @implementation ViewController
 
-- (DropMenuView *)menuView {
-    if (!_menuView && [self.menuArray count] > 0) {
-        _menuView = [[DropMenuView alloc] initWithOrigin:CGPointMake(0, self.tableView.tableHeaderView.frame.size.height + self.sectionView.frame.size.height)];
-        _menuView.dataSource = self;
-        _menuView.delegate = self;
-    }
-    return _menuView;
-}
-
 - (SectionView *)sectionView {
     if (!_sectionView) {
         NSArray *array = [[NSBundle mainBundle]loadNibNamed:@"SectionView" owner:nil options:nil];
         UIView *view = [array lastObject];
         _sectionView = (SectionView *)view;
-        _sectionView.delegate = self;
     }
     return _sectionView;
 }
@@ -75,16 +67,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initView];
+}
+
+//创建View
+- (void)initView {
     UIView *v = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, tableViewHeaderHeight)];
     v.backgroundColor = [UIColor redColor];
     self.tableView.tableHeaderView = v;
+    self.sectionView.delegate = self;
+    
+    self.menuView = [[DropMenuView alloc] initWithOrigin:CGPointMake(0, tableViewHeaderHeight + tableViewSectionHeight)];
+    self.menuView.dataSource = self;
+    self.menuView.delegate = self;
     self.menuView.transformImageView = self.sectionView.arrowImageView;
     self.menuView.titleLabel = self.sectionView.screenLabel;
+    
     [self.menuView reloadData];
     
     self.sectionView.screenLabel.text = ((FilterTypeModel *)self.menuArray[0]).filterName;
 }
-    
+
+#pragma mark tableViewDelegate
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 13;
 }
