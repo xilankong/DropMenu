@@ -13,8 +13,8 @@
 #pragma mark - 协议
 @protocol DropMenuDelegate <NSObject>
 
-@required
 - (void)menu:(DropMenuView *)menu tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGPoint)menu_filterViewPosition;
 
 @end
 
@@ -22,11 +22,7 @@
 
 @protocol DropMenuDataSource <NSObject>
 
-//防止下拉错位
-- (CGFloat)menu_updateFilterViewPosition;
-
 @required
-
 - (NSMutableArray<FilterTypeModel *> *)menu_filterDataArray;
 
 @end
@@ -42,10 +38,8 @@
 @property (nonatomic, weak) id<DropMenuDelegate> delegate;
 
 - (void)reloadData;
-- (void)backgroundTapped;
-- (void)menuTappedWithSuperView:(UIView *)view;
-
-- (DropMenuView *)initWithOrigin:(CGPoint)origin;
+- (void)menuHide;
+- (void)menuShowInSuperView:(UIView *)view;
 
 
 @end

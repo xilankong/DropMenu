@@ -77,7 +77,7 @@
     self.tableView.tableHeaderView = v;
     self.sectionView.delegate = self;
     
-    self.menuView = [[DropMenuView alloc] initWithOrigin:CGPointMake(0, tableViewHeaderHeight + tableViewSectionHeight)];
+    self.menuView = [[DropMenuView alloc] init];
     self.menuView.dataSource = self;
     self.menuView.delegate = self;
     self.menuView.transformImageView = self.sectionView.arrowImageView;
@@ -122,11 +122,11 @@
     return self.menuArray;
 }
 
-- (CGFloat)menu_updateFilterViewPosition {
+- (CGPoint)menu_filterViewPosition {
     if (self.tableView.contentOffset.y + 64 > tableViewHeaderHeight) {
-        return tableViewSectionHeight + 64;
+        return CGPointMake(0, tableViewSectionHeight + 64);
     } else {
-        return self.tableView.tableHeaderView.frame.size.height + tableViewSectionHeight - self.tableView.contentOffset.y;
+        return CGPointMake(0, self.tableView.tableHeaderView.frame.size.height + tableViewSectionHeight - self.tableView.contentOffset.y);
     }
 }
 
@@ -137,7 +137,7 @@
 #pragma mark sectionViewDelegate
 
 - (void)clickAction {
-    [self.menuView menuTappedWithSuperView:self.view];
+    [self.menuView menuShowInSuperView:self.view];
 }
 
 - (void)didReceiveMemoryWarning {

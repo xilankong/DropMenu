@@ -46,23 +46,22 @@ static NSString *identifier = @"dropMenuViewId";
     return _menuArray;
 }
 
-#pragma mark - 初始化 根据位置
-- (DropMenuView *)initWithOrigin:(CGPoint)origin {
-    self = [self initWithFrame:CGRectMake(origin.x, origin.y, screenWidth, screenHeight - origin.y)];
+- (instancetype)init
+{
+    self = [super init];
     if (self) {
-        _origin = origin;
         //列表
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(origin.x, 0, self.frame.size.width, 0) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 0) style:UITableViewStylePlain];
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.rowHeight = tableViewCellHeight;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         //遮罩
-        _backGroundView = [[UIView alloc] initWithFrame:CGRectMake(origin.x, 0, self.frame.size.width, screenHeight)];
+        _backGroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
         _backGroundView.backgroundColor = bgColor;
         _backGroundView.opaque = NO;
         
-        UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundTapped)];
+        UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(menuHide)];
         [_backGroundView addGestureRecognizer:gesture];
         [self addSubview:_backGroundView];
         [self addSubview:_tableView];
@@ -80,16 +79,16 @@ static NSString *identifier = @"dropMenuViewId";
 }
 
 #pragma mark - 触发下拉事件
-- (void)menuTappedWithSuperView:(UIView *)view {
+- (void)menuShowInSuperView:(UIView *)view {
     if (!_show) {
         
-        if (self.dataSource && [self.dataSource respondsToSelector:@selector(menu_updateFilterViewPosition)]) {
-            //防止错位
-            CGFloat positionY = [self.dataSource menu_updateFilterViewPosition];
-            self.frame = CGRectMake(0, positionY, screenWidth, screenHeight - positionY);
+        if (self.delegate && [self.delegate respondsToSelector:@selector(menu_filterViewPosition)]) {
+            CGPoint position = [self.delegate menu_filterViewPosition];
+            self.frame = CGRectMake(position.x, position.y, screenWidth, screenHeight - position.y);
+        } else {
+            self.frame = CGRectMake(0, 0, screenWidth, screenHeight);
         }
         [view addSubview:self];
-        [_tableView reloadData];
         
         [UIView animateWithDuration:0.2 animations:^{
             _backGroundView.backgroundColor = bgColor;
@@ -110,10 +109,11 @@ static NSString *identifier = @"dropMenuViewId";
             _show = !_show;
         }];
     }
+    [self reloadData];
 }
 
 #pragma mark - 触发收起事件
-- (void)backgroundTapped {
+- (void)menuHide {
     if (_show) {
         [UIView animateWithDuration:0.2 animations:^{
             _backGroundView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
@@ -164,7 +164,7 @@ static NSString *identifier = @"dropMenuViewId";
     self.titleLabel.text = model.filterName;
     if (self.delegate || [self.delegate respondsToSelector:@selector(menu:tableView:didSelectRowAtIndexPath:)]) {
         [self.delegate menu:self tableView:tableView didSelectRowAtIndexPath:indexPath];
-        [self backgroundTapped];
+        [self menuHide];
     }
 }
 
