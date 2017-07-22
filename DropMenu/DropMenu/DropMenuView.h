@@ -6,24 +6,28 @@
 //  Copyright © yanghuang All rights reserved.
 //
 
-#import "FilterTypeModel.h"
 #import <UIKit/UIKit.h>
 @class DropMenuView;
 
 #pragma mark - 协议
 @protocol DropMenuDelegate <NSObject>
 
-- (void)menu:(DropMenuView *)menu tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
-- (CGPoint)menu_filterViewPosition;
+@required
+//出现位置
+- (CGPoint)menu_positionInSuperView;
+//点击事件
+- (void)menu:(DropMenuView *)menu  didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
 #pragma mark - 数据源
-
 @protocol DropMenuDataSource <NSObject>
 
 @required
-- (NSMutableArray<FilterTypeModel *> *)menu_filterDataArray;
+//设置title
+- (NSString *)menu_titleForRow:(NSInteger)row;
+//设置size
+- (NSInteger)menu_numberOfRows;
 
 @end
 
@@ -31,14 +35,18 @@
 
 @interface DropMenuView : UIView
 
+@property (nonatomic, assign) CGFloat menuCellHeight;
+@property (nonatomic, assign) CGFloat menuMaxHeight;
+@property (nonatomic, strong) UIColor *titleHightLightColor;
+@property (nonatomic, strong) UIColor *titleColor;
+
 @property (nonatomic, weak) UILabel *titleLabel;
 @property (nonatomic, weak) UIImageView *transformImageView;
-
 @property (nonatomic, weak) id<DropMenuDataSource> dataSource;
 @property (nonatomic, weak) id<DropMenuDelegate> delegate;
 
 - (void)reloadData;
-- (void)menuHide;
+- (void)menuHidden;
 - (void)menuShowInSuperView:(UIView *)view;
 
 

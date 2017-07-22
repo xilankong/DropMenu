@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "DropMenuView.h"
+#import "FilterTypeModel.h"
 #import "SectionView.h"
 
 #define screenHeight  [UIScreen mainScreen].bounds.size.height
@@ -18,10 +19,8 @@
 @interface ViewController ()<DropMenuDelegate, DropMenuDataSource, UITableViewDataSource, UITableViewDelegate, SectionViewProtocol>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
 @property (strong, nonatomic) SectionView *sectionView;
 @property (nonatomic, strong) DropMenuView *menuView;
-
 @property (nonatomic, strong) NSMutableArray *menuArray;
 @end
 
@@ -82,7 +81,9 @@
     self.menuView.delegate = self;
     self.menuView.transformImageView = self.sectionView.arrowImageView;
     self.menuView.titleLabel = self.sectionView.screenLabel;
-    
+    self.menuView.titleHightLightColor = [UIColor redColor];
+//    self.menuView.menuCellHeight
+//    self.menuView.menuMaxHeight
     [self.menuView reloadData];
     
     self.sectionView.screenLabel.text = ((FilterTypeModel *)self.menuArray[0]).filterName;
@@ -117,12 +118,7 @@
 }
 
 #pragma mark menuDelegate
-
-- (NSMutableArray<FilterTypeModel *> *)menu_filterDataArray {
-    return self.menuArray;
-}
-
-- (CGPoint)menu_filterViewPosition {
+- (CGPoint)menu_positionInSuperView {
     if (self.tableView.contentOffset.y + 64 > tableViewHeaderHeight) {
         return CGPointMake(0, tableViewSectionHeight + 64);
     } else {
@@ -130,7 +126,16 @@
     }
 }
 
-- (void)menu:(DropMenuView *)menu tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+-(NSString *)menu_titleForRow:(NSInteger)row {
+    FilterTypeModel *model = [self.menuArray objectAtIndex:row];
+    return model.filterName;
+}
+
+-(NSInteger)menu_numberOfRows {
+    return [self.menuArray count];
+}
+
+- (void)menu:(DropMenuView *)menu didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
 }
 

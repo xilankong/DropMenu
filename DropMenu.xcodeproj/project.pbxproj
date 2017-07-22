@@ -49,8 +49,8 @@
 		6FD366441EE6A78F00064523 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6FD3664E1EE6A7E500064523 /* DropMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropMenuView.h; sourceTree = "<group>"; };
 		6FD3664F1EE6A7E500064523 /* DropMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropMenuView.m; sourceTree = "<group>"; };
-		6FD366511EE6A80F00064523 /* FilterTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterTypeModel.h; sourceTree = "<group>"; };
-		6FD366521EE6A80F00064523 /* FilterTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterTypeModel.m; sourceTree = "<group>"; };
+		6FD366511EE6A80F00064523 /* FilterTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FilterTypeModel.h; path = DropMenu/FilterTypeModel.h; sourceTree = "<group>"; };
+		6FD366521EE6A80F00064523 /* FilterTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FilterTypeModel.m; path = DropMenu/FilterTypeModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +98,8 @@
 				6FD3662F1EE6A78F00064523 /* ViewController.m */,
 				3DE3AA2B1F1D06C100BC4B42 /* SectionView.h */,
 				3DE3AA2C1F1D06C100BC4B42 /* SectionView.m */,
+				6FD366511EE6A80F00064523 /* FilterTypeModel.h */,
+				6FD366521EE6A80F00064523 /* FilterTypeModel.m */,
 				3DE3AA2E1F1D06DC00BC4B42 /* SectionView.xib */,
 				6FD3664D1EE6A7E500064523 /* DropMenu */,
 				6FD366311EE6A78F00064523 /* Main.storyboard */,
@@ -131,8 +133,6 @@
 			children = (
 				6FD3664E1EE6A7E500064523 /* DropMenuView.h */,
 				6FD3664F1EE6A7E500064523 /* DropMenuView.m */,
-				6FD366511EE6A80F00064523 /* FilterTypeModel.h */,
-				6FD366521EE6A80F00064523 /* FilterTypeModel.m */,
 			);
 			path = DropMenu;
 			sourceTree = "<group>";

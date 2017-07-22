@@ -10,110 +10,104 @@
 
 #define screenHeight  [UIScreen mainScreen].bounds.size.height
 #define screenWidth   [UIScreen mainScreen].bounds.size.width
-//cell高度
+//默认cell高度
 #define tableViewCellHeight 45.f
-//最大下拉高度
+//默认最大下拉高度
 #define tableViewMaxHeight 315.f
-
+//遮罩颜色
 #define bgColor [UIColor colorWithWhite:0.0 alpha:0.3]
-
+//默认未选中文案颜色
 #define unselectColor [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0]
-
+//默认选中文案颜色
 #define selectColor [UIColor colorWithRed:0.02 green:0.81 blue:0.76 alpha:1.0]
 
 
 static NSString *identifier = @"dropMenuViewId";
 
 @interface DropMenuView () <UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic, assign) BOOL show; //是否显示
-@property (nonatomic, assign) CGPoint origin;
-@property (nonatomic, assign) CGFloat height;
+ //是否显示
+@property (nonatomic, assign) BOOL show;
 @property (nonatomic, strong) NSMutableArray *menuArray;
-
-@property (nonatomic, strong) UIView *backGroundView;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIView *backGroundView;
 
 @end
 
 @implementation DropMenuView
 
-- (NSMutableArray<FilterTypeModel *> *)menuArray {
-    if (!_menuArray) {
-        _menuArray = [NSMutableArray array];
-    }
-    _menuArray = [self.dataSource menu_filterDataArray];
-    return _menuArray;
-}
-
 - (instancetype)init
 {
-    self = [super init];
+    self = [super initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
     if (self) {
-        //列表
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 0) style:UITableViewStylePlain];
-        _tableView.dataSource = self;
-        _tableView.delegate = self;
-        _tableView.rowHeight = tableViewCellHeight;
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        //遮罩
-        _backGroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
-        _backGroundView.backgroundColor = bgColor;
-        _backGroundView.opaque = NO;
-        
-        UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(menuHide)];
-        [_backGroundView addGestureRecognizer:gesture];
-        [self addSubview:_backGroundView];
-        [self addSubview:_tableView];
+        [self initUI];
     }
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initUI];
+    }
+    return self;
+}
+
+- (void)initUI {
+    //列表
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 0) style:UITableViewStylePlain];
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //遮罩
+    _backGroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    _backGroundView.backgroundColor = bgColor;
+    _backGroundView.opaque = NO;
+     //事件
+    UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(menuHidden)];
+    [_backGroundView addGestureRecognizer:gesture];
+    [self addSubview:_backGroundView];
+    [self addSubview:_tableView];
+}
+
 #pragma mark - 更新数据源
 -(void)reloadData {
-    CGFloat height = [self.menuArray count] * tableViewCellHeight > tableViewMaxHeight ? tableViewMaxHeight : [_menuArray count] * tableViewCellHeight;
-    _tableView.frame = CGRectMake(_origin.x, 0, self.frame.size.width, height);
-    _tableView.scrollEnabled = [_menuArray count] * tableViewCellHeight > tableViewMaxHeight ? YES : NO;
-    
+    _tableView.rowHeight = self.menuCellHeight ?: tableViewCellHeight;
+    CGFloat maxHeight = self.menuMaxHeight?:tableViewMaxHeight;
+    CGFloat count = [self.dataSource menu_numberOfRows];
+    CGFloat height = count * _tableView.rowHeight  > maxHeight ? maxHeight : count * _tableView.rowHeight ;
+    _tableView.frame = CGRectMake(0, 0, self.frame.size.width, height);
+    _tableView.scrollEnabled = count * _tableView.rowHeight  > maxHeight ? YES : NO;
     [_tableView reloadData];
 }
 
 #pragma mark - 触发下拉事件
 - (void)menuShowInSuperView:(UIView *)view {
     if (!_show) {
-        
-        if (self.delegate && [self.delegate respondsToSelector:@selector(menu_filterViewPosition)]) {
-            CGPoint position = [self.delegate menu_filterViewPosition];
-            self.frame = CGRectMake(position.x, position.y, screenWidth, screenHeight - position.y);
+        if (self.delegate && [self.delegate respondsToSelector:@selector(menu_positionInSuperView)]) {
+            CGPoint position = [self.delegate menu_positionInSuperView];
+            self.frame = CGRectMake(position.x, position.y, self.frame.size.width, screenHeight - position.y);
         } else {
-            self.frame = CGRectMake(0, 0, screenWidth, screenHeight);
+            self.frame = CGRectMake(0, 0, self.frame.size.width, screenHeight);
         }
         [view addSubview:self];
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            _backGroundView.backgroundColor = bgColor;
-            if (self.transformImageView) {
-                self.transformImageView.transform = CGAffineTransformMakeRotation(M_PI);
-            }
-        } completion:^(BOOL finished) {
-            _show = !_show;
-        }];
-    } else {
-        [UIView animateWithDuration:0.2 animations:^{
-            _backGroundView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
-            if (self.transformImageView) {
-                self.transformImageView.transform = CGAffineTransformMakeRotation(0);
-            }
-        } completion:^(BOOL finished) {
-            [self removeFromSuperview];
-            _show = !_show;
-        }];
     }
+    [UIView animateWithDuration:0.2 animations:^{
+        _backGroundView.backgroundColor = _show ? [UIColor colorWithWhite:0.0 alpha:0.0] : bgColor;
+        if (self.transformImageView) {
+            self.transformImageView.transform = _show ? CGAffineTransformMakeRotation(0) : CGAffineTransformMakeRotation(M_PI);
+        }
+    } completion:^(BOOL finished) {
+        if (_show) {
+            [self removeFromSuperview];
+        }
+        _show = !_show;
+    }];
     [self reloadData];
 }
 
 #pragma mark - 触发收起事件
-- (void)menuHide {
+- (void)menuHidden {
     if (_show) {
         [UIView animateWithDuration:0.2 animations:^{
             _backGroundView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
@@ -127,13 +121,10 @@ static NSString *identifier = @"dropMenuViewId";
     }
 }
 
+
 #pragma mark - 代理、数据源
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[self.dataSource menu_filterDataArray] count];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 0;
+    return [self.dataSource menu_numberOfRows];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -142,29 +133,24 @@ static NSString *identifier = @"dropMenuViewId";
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-
-    FilterTypeModel *model = [self.dataSource menu_filterDataArray][indexPath.row];
-    cell.textLabel.text = model.filterName;
-    
+    cell.textLabel.text = [self.dataSource menu_titleForRow:indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-    cell.textLabel.textColor = unselectColor;
-    cell.textLabel.highlightedTextColor = selectColor;
+    cell.textLabel.textColor = self.titleColor ?: unselectColor;
+    cell.textLabel.highlightedTextColor = self.titleHightLightColor ?: selectColor;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     if ([self.titleLabel.text isEqualToString:cell.textLabel.text]) {
-        cell.textLabel.textColor = selectColor;
+        cell.textLabel.textColor = self.titleHightLightColor ?: selectColor;
     }
-
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    FilterTypeModel *model = [self.dataSource menu_filterDataArray][indexPath.row];
-    self.titleLabel.text = model.filterName;
-    if (self.delegate || [self.delegate respondsToSelector:@selector(menu:tableView:didSelectRowAtIndexPath:)]) {
-        [self.delegate menu:self tableView:tableView didSelectRowAtIndexPath:indexPath];
-        [self menuHide];
+    self.titleLabel.text = [self.dataSource menu_titleForRow:indexPath.row];
+    if (self.delegate || [self.delegate respondsToSelector:@selector(menu:didSelectRowAtIndexPath:)]) {
+        [self.delegate menu:self  didSelectRowAtIndexPath:indexPath];
+        [self menuHidden];
     }
 }
 
